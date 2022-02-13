@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 public class HistoricalFigure {
@@ -12,8 +12,9 @@ public class HistoricalFigure {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private Date dateOfBirth;
+    private String firstName;
+    private String surName;
+    private LocalDate dateOfBirth;
     private String placeOfBirth;
 
     public Long getId() {
@@ -24,19 +25,19 @@ public class HistoricalFigure {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -49,5 +50,12 @@ public class HistoricalFigure {
     }
 
     public HistoricalFigure() {
+    }
+
+    public HistoricalFigure(String firstName, String surName, LocalDate dateOfBirth, String placeOfBirth) {
+        this.firstName = firstName;
+        this.surName = surName;
+        this.dateOfBirth = dateOfBirth;
+        this.placeOfBirth = placeOfBirth;
     }
 }

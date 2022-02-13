@@ -1,10 +1,7 @@
 package de.anybytes.humanhistorybackend.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.Date;
+import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 public class HistoryEvent {
@@ -13,8 +10,22 @@ public class HistoryEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Date dateOfEvent;
+    private LocalDate dateOfEvent;
+    @ManyToOne
+    @JoinColumn(name = "place_of_event_id")
+    private Country placeOfEvent;
     private String description;
+
+    public Country getPlaceOfEvent() {
+        return placeOfEvent;
+    }
+
+    public HistoryEvent(String name, LocalDate dateOfEvent, Country placeOfEvent, String description) {
+        this.name = name;
+        this.dateOfEvent = dateOfEvent;
+        this.placeOfEvent = placeOfEvent;
+        this.description = description;
+    }
 
     public HistoryEvent() {
     }
@@ -35,11 +46,11 @@ public class HistoryEvent {
         this.name = name;
     }
 
-    public Date getDateOfEvent() {
+    public LocalDate getDateOfEvent() {
         return dateOfEvent;
     }
 
-    public void setDateOfEvent(Date dateOfEvent) {
+    public void setDateOfEvent(LocalDate dateOfEvent) {
         this.dateOfEvent = dateOfEvent;
     }
 
