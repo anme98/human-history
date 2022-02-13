@@ -5,6 +5,9 @@ import de.anybytes.humanhistorybackend.entity.HistoricalFigure;
 import de.anybytes.humanhistorybackend.entity.HistoryCategory;
 import de.anybytes.humanhistorybackend.entity.HistoryEvent;
 import de.anybytes.humanhistorybackend.repository.CountryRepository;
+import de.anybytes.humanhistorybackend.repository.HistoricalFigureRepository;
+import de.anybytes.humanhistorybackend.repository.HistoryCategoryRepository;
+import de.anybytes.humanhistorybackend.repository.HistoryEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -17,10 +20,16 @@ public class DatabaseInitilizer implements CommandLineRunner {
 
 
     private final CountryRepository countryRepository;
+    private final HistoryEventRepository historyEventRepository;
+    private final HistoricalFigureRepository historicalFigureRepository;
+    private final HistoryCategoryRepository historyCategoryRepository;
 
     @Autowired
-    public DatabaseInitilizer(CountryRepository countryRepository) {
+    public DatabaseInitilizer(CountryRepository countryRepository, HistoryEventRepository historyEventRepository, HistoricalFigureRepository historicalFigureRepository, HistoryCategoryRepository historyCategoryRepository) {
         this.countryRepository = countryRepository;
+        this.historyEventRepository = historyEventRepository;
+        this.historicalFigureRepository = historicalFigureRepository;
+        this.historyCategoryRepository = historyCategoryRepository;
     }
 
 
@@ -28,7 +37,7 @@ public class DatabaseInitilizer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         LocalDate dateOfBirthMerkel= LocalDate.of(1954, 7, 17);
         LocalDate dateOfBirthObama = LocalDate.of(1961, 8, 4);
-        LocalDate dateOfWeimar = LocalDate.of(1919,0,0);
+        LocalDate dateOfWeimar = LocalDate.of(1919,1,1);
         LocalDate dateOfTheFall = LocalDate.of(1989,11,11);
         Country germany = new Country("Germany");
         Country italy = new Country("Italy");
@@ -40,6 +49,9 @@ public class DatabaseInitilizer implements CommandLineRunner {
         HistoryEvent weimarerRepublik = new HistoryEvent("Weimarer Republik", dateOfWeimar, germany, "Die erste Demokratie in Deutschland");
         try {
             countryRepository.saveAll(Arrays.asList(germany, italy));
+            historyEventRepository.saveAll(Arrays.asList(fallOfTheBerlinWall, weimarerRepublik));
+            historicalFigureRepository.saveAll(Arrays.asList(angelaMerkel, barackObama));
+            historyCategoryRepository.saveAll(Arrays.asList(categoryPhilosophy, categoryScience));
         } catch (Exception e) {
             throw new Exception("Daten konnten nicht gespeichert werden");
         }
