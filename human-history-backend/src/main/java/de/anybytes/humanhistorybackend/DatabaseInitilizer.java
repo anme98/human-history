@@ -32,7 +32,6 @@ public class DatabaseInitilizer implements CommandLineRunner {
         this.historyCategoryRepository = historyCategoryRepository;
     }
 
-
     @Override
     public void run(String... args) throws Exception {
         LocalDate dateOfBirthMerkel= LocalDate.of(1954, 7, 17);
