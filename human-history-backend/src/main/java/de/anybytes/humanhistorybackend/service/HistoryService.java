@@ -1,5 +1,7 @@
 package de.anybytes.humanhistorybackend.service;
 
+import de.anybytes.humanhistorybackend.dto.CreateCountryDTO;
+import de.anybytes.humanhistorybackend.dto.UpdateCountryDTO;
 import de.anybytes.humanhistorybackend.entity.Country;
 import de.anybytes.humanhistorybackend.entity.HistoricalFigure;
 import de.anybytes.humanhistorybackend.entity.HistoryCategory;
@@ -9,8 +11,8 @@ public interface HistoryService {
     
     Iterable<Country> getAllCountries();
     Country getCountry(Long id);
-    Country saveCountry(Country country);
-    Country updateCountry(Country country);
+    Country saveCountry(CreateCountryDTO countryDTO);
+    Country updateCountry(UpdateCountryDTO countryDTO);
     void deleteCountryById(Long id);
     
     Iterable<HistoricalFigure> getAllHistoricalFigures();

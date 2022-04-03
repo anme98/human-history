@@ -1,14 +1,24 @@
 package de.anybytes.humanhistorybackend.controller;
 
+import de.anybytes.humanhistorybackend.dto.CreateCountryDTO;
+import de.anybytes.humanhistorybackend.dto.UpdateCountryDTO;
 import de.anybytes.humanhistorybackend.entity.Country;
 import de.anybytes.humanhistorybackend.entity.HistoricalFigure;
 import de.anybytes.humanhistorybackend.entity.HistoryCategory;
 import de.anybytes.humanhistorybackend.entity.HistoryEvent;
 import de.anybytes.humanhistorybackend.service.HistoryService;
+import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping(value = "/api/v1")
@@ -31,14 +41,21 @@ public class HistoryController {
         return new ResponseEntity<>(historyService.getCountry(id), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/country")
-    public ResponseEntity<Country> saveCountry (@RequestBody Country country) {
-        return new ResponseEntity<>(historyService.saveCountry(country), HttpStatus.CREATED);
+    @PostMapping(value = "/country", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public void saveCountry (@RequestBody Country country) {
+        Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+        logger.setLevel(Level.ALL);
+        Handler handler = new ConsoleHandler();
+        handler.setLevel(Level.ALL);
+        logger.addHandler(handler);
+        logger.info("galleries details: " + country);
+//        CreateCountryDTO countryDTO = new CreateCountryDTO(name, headOfState, flag);
+//        return new ResponseEntity<>(historyService.saveCountry(countryDTO), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/country")
-    public ResponseEntity<Country> updateCountry (@RequestBody Country country) {
-        return new ResponseEntity<>(historyService.updateCountry(country), HttpStatus.OK);
+    public ResponseEntity<Country> updateCountry (@RequestBody UpdateCountryDTO countryDTO) {
+        return new ResponseEntity<>(historyService.updateCountry(countryDTO), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/country/{id}")

@@ -1,5 +1,7 @@
 package de.anybytes.humanhistorybackend.service;
 
+import de.anybytes.humanhistorybackend.dto.CreateCountryDTO;
+import de.anybytes.humanhistorybackend.dto.UpdateCountryDTO;
 import de.anybytes.humanhistorybackend.entity.Country;
 import de.anybytes.humanhistorybackend.entity.HistoricalFigure;
 import de.anybytes.humanhistorybackend.entity.HistoryCategory;
@@ -8,6 +10,7 @@ import de.anybytes.humanhistorybackend.repository.CountryRepository;
 import de.anybytes.humanhistorybackend.repository.HistoricalFigureRepository;
 import de.anybytes.humanhistorybackend.repository.HistoryCategoryRepository;
 import de.anybytes.humanhistorybackend.repository.HistoryEventRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +21,15 @@ public class HistoryServiceImpl implements HistoryService {
     private final HistoricalFigureRepository historicalFigureRepository;
     private final HistoryCategoryRepository historyCategoryRepository;
     private final HistoryEventRepository historyEventRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public HistoryServiceImpl(CountryRepository countryRepository, HistoricalFigureRepository historicalFigureRepository, HistoryCategoryRepository historyCategoryRepository, HistoryEventRepository historyEventRepository) {
+    public HistoryServiceImpl(CountryRepository countryRepository, HistoricalFigureRepository historicalFigureRepository, HistoryCategoryRepository historyCategoryRepository, HistoryEventRepository historyEventRepository, ModelMapper modelMapper) {
         this.countryRepository = countryRepository;
         this.historicalFigureRepository = historicalFigureRepository;
         this.historyCategoryRepository = historyCategoryRepository;
         this.historyEventRepository = historyEventRepository;
+        this.modelMapper = modelMapper;
     }
 
     /**
@@ -41,12 +46,15 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public Country saveCountry(Country country) {
-        return this.countryRepository.save(country);
+    public Country saveCountry(CreateCountryDTO countryDTO) {
+        return countryRepository.save(modelMapper.map(countryDTO, Country.class));
     }
 
     @Override
-    public Country updateCountry(Country country) {
+    public Country updateCountry(UpdateCountryDTO countryDTO) {
+        Country country = countryRepository.findById(countryDTO.getId()).orElseThrow(() -> new NullPointerException("Not Found!"));
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.map(countryDTO, country);
         return this.countryRepository.save(country);
     }
 
